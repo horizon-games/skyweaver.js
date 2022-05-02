@@ -1,6 +1,6 @@
 {
   "name": "skyweaver",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Skyweaver API & Developer SDK for Web, React Native and Nodejs",
   "repository": "https://github.com/horizon-games/skyweaver",
   "main": "dist/index.js",
@@ -10,7 +10,6 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf ./dist && rollup -c",
-    "prepublishOnly": "yarn test",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "test:watch": "jest --watchAll",
     "test": "jest --ci --runInBand"
