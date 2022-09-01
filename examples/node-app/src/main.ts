@@ -8,13 +8,13 @@ const main = async () => {
 
   const apiClient = new SkyweaverAPIClient(apiAccessToken)
 
-  const wee = await apiClient.listLeaderboard({
+  const leaderboard = await apiClient.listLeaderboard({
     req: {
       gameMode: GameMode.RANKED_CONSTRUCTED
     }
   })
 
-  console.log(wee)
+  console.log(leaderboard)
 }
 
 main()

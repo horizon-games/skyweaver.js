@@ -10,6 +10,7 @@ Please first make sure you have a Skyweaver Developer API Key for your project.
 
 You can request an API key at https://developers.skyweaver.net
 
+**Best place to start:** [read the example source here](src/index.ts) :)
 
 ## Docs / usage
 
@@ -28,6 +29,8 @@ Now you will have built a local copy of skyweaver.js. Next you can run the examp
 1. cd skyweaver.js/examples/web-app
 2. yarn install
 3. yarn dev
+
+Next, update the [example source](src/index.ts) to use your api key and have fun.
 
 
 ## Support
