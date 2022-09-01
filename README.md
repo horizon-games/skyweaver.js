@@ -3,6 +3,12 @@ skyweaver.js
 
 Skyweaver API & Developer SDK for Web, React Native and Nodejs
 
+`npm install skyweaver`
+
+or
+
+`yarn add skyweaver`
+
 
 ## Request a Skyweaver API Key
 
