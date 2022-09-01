@@ -29,13 +29,14 @@ https://developers.skyweaver.net
 Please see our [web](/examples/web-app/) and [node](/examples/node-app/) examples using `skyweaver.js`
 
 
-## Notes to developers
+## Note to developers
 
 The Skyweaver API is built on [webrpc](https://github.com/webrpc/webrpc), which code-generates
-the API client source all in a single file, [/src/skyweaver-api.gen.ts](/src/skyweaver-api.gen.ts).
-Check out the source here, and jump to `export interface SkyWeaverAPI` in the source to view the
-interface type which defines all RPC methods/endpoints of the Skyweaver API.
+the API client source into a single file: [/src/skyweaver-api.gen.ts](/src/skyweaver-api.gen.ts).
 
+The source is very readable and a great reference for the capabilities of the API. Simply jump to
+`export interface SkyWeaverAPI` in the source to view the interface type which defines all RPC
+methods/endpoints of the Skyweaver API.
 
 
 ## Support
