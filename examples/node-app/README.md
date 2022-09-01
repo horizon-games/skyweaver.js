@@ -20,7 +20,7 @@ You can request an API key at https://developers.skyweaver.net
 ## Docs / usage
 
 The skyweaver.js SDK provides type-safe access to the Skyweaver API. The best
-reference is to read the `Client API interface`[/src/skyweaver-api.gen.ts] to
+reference is to read the [`Client API interface`](/src/skyweaver-api.gen.ts) to
 learn the available methods.
 
 Once you have an API key, next steps:

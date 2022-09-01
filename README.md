@@ -9,6 +9,10 @@ or
 
 `yarn add skyweaver`
 
+The skyweaver.js SDK provides type-safe access to the Skyweaver API. The best
+reference is to read the [`Client API interface`](/src/skyweaver-api.gen.ts) to
+learn the available methods.
+
 
 ## Request a Skyweaver API Key
 
