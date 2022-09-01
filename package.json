@@ -1,8 +1,8 @@
 {
   "name": "skyweaver",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Skyweaver API & Developer SDK for Web, React Native and Nodejs",
-  "repository": "https://github.com/horizon-games/skyweaver",
+  "repository": "https://github.com/horizon-games/skyweaver.js",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
