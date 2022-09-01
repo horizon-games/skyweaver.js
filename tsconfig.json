@@ -5,7 +5,9 @@
     "moduleResolution": "node",
     "declaration": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "lib": ["es2018", "dom"],
+    "types": ["node"]
   },
   "include": [
     "src/**/*"

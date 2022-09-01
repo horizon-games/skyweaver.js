@@ -1,0 +1,14 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "yarn start",
+    "start": "ts-node src/main.ts"
+  },
+  "devDependencies": {
+    "skyweaver": "../../",
+    "ts-node": "^10.9.1"
+  }
+}
