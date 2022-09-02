@@ -20,17 +20,11 @@ learn the available methods.
 
 Once you have an API key, next steps:
 
-1. cd skyweaver.js/
-2. yarn install
-3. yarn build
-
-Now you will have built a local copy of skyweaver.js. Next you can run the examples:
-
 1. cd skyweaver.js/examples/web-app
 2. yarn install
-3. yarn dev
-
-Next, update the [example source](src/index.ts) to use your api key and have fun.
+3. update the [example source](src/index.ts) to set `apiAccessToken` with your api key
+4. yarn dev
+5. have fun :D
 
 
 ## Support
