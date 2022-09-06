@@ -21,7 +21,7 @@ or
 
 ## Request a Skyweaver API Key
 
-https://developers.skyweaver.net
+https://request-api-key.skyweaver.net
 
 
 ## Examples

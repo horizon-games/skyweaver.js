@@ -12,7 +12,7 @@ some extra work, but we recommend to just use node v18.
 
 Please first make sure you have a Skyweaver Developer API Key for your project.
 
-You can request an API key at https://developers.skyweaver.net
+You can request an API key at https://request-api-key.skyweaver.net
 
 **Best place to start:** [read the example source here](src/main.ts) :)
 

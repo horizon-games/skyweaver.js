@@ -13,7 +13,7 @@ export class SkyweaverAPIClient extends BaseSkyweaverAPI {
     this._authToken = apiAccessToken
 
     if (!apiAccessToken || apiAccessToken === '') {
-      throw new Error('Skyweaver API config error -- please request api token at https://developers.skyweaver.net')
+      throw new Error('Skyweaver API config error -- please request api token at https://request-api-key.skyweaver.net')
     }
 
     // TODO(future fix), see webrpc https://github.com/webrpc/webrpc/pull/103
