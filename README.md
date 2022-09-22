@@ -18,15 +18,23 @@ or
 `yarn add skyweaver`
 
 
+## Running the examples
+
+Please see our [web](/examples/web-app/) and [node](/examples/node-app/) examples using `skyweaver.js`
+
+To run the examples:
+1. Clone this repo -- `git clone git@github.com:horizon-games/skyweaver.js.git`
+2. `cd skyweaver.js/examples/web-app`
+3. `yarn install`
+4. update the [example source](src/main.ts) to set `apiAccessToken` with your api key
+5. `yarn dev`
+6. have fun :D
+
 
 ## Request a Skyweaver API Key
 
 https://request-api-key.skyweaver.net
 
-
-## Examples
-
-Please see our [web](/examples/web-app/) and [node](/examples/node-app/) examples using `skyweaver.js`
 
 
 ## Note to developers
