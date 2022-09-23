@@ -1,6 +1,6 @@
 export declare const WebRPCVersion = "v1";
 export declare const WebRPCSchemaVersion = "v0.3.0";
-export declare const WebRPCSchemaHash = "e047af6bf84f8be5d8448151fa67f81df766c420";
+export declare const WebRPCSchemaHash = "bf3efdf3504c50d2ef8dd16b214905051dc2275c";
 export declare enum AccountStatus {
     ACTIVE = "ACTIVE",
     SUSPENDED = "SUSPENDED",
@@ -34,6 +34,7 @@ export declare enum ItemType {
     SW_CONQUEST_TICKET = "SW_CONQUEST_TICKET",
     SW_CRYSTALS = "SW_CRYSTALS",
     SW_STICKERS = "SW_STICKERS",
+    SW_HERO_SKINS = "SW_HERO_SKINS",
     SW_HERO = "SW_HERO"
 }
 export declare enum FeedEventType {
@@ -47,7 +48,8 @@ export declare enum FeedEventType {
     IAP_CONQUEST_MINTING = "IAP_CONQUEST_MINTING",
     DELAYED_REWARD = "DELAYED_REWARD",
     DELAYED_REWARD_MINTED = "DELAYED_REWARD_MINTED",
-    STARTED_DECK_UNLOCK = "STARTED_DECK_UNLOCK"
+    STARTED_DECK_UNLOCK = "STARTED_DECK_UNLOCK",
+    CONQUEST_V2_REWARD = "CONQUEST_V2_REWARD"
 }
 export declare enum Hero {
     UNKNOWN = "UNKNOWN",
@@ -147,7 +149,8 @@ export declare enum RewardType {
     PRISM = "PRISM",
     HERO = "HERO",
     HERO_SKIN = "HERO_SKIN",
-    DECK = "DECK"
+    DECK = "DECK",
+    CONQUEST_POINTS = "CONQUEST_POINTS"
 }
 export declare enum DeckType {
     RANDOM = "RANDOM",
@@ -176,6 +179,10 @@ export declare enum BannerType {
     WARNING = "WARNING",
     EMERGENCY = "EMERGENCY"
 }
+export declare enum NotificationType {
+    LEADERBOARD_REWARD = "LEADERBOARD_REWARD",
+    CONQUEST_V2_REWARD = "CONQUEST_V2_REWARD"
+}
 export interface Version {
     webrpcVersion: string;
     schemaVersion: string;
@@ -192,13 +199,18 @@ export interface Account {
     warmUps: number;
     level: number;
     levelUpXP: number;
-    constructedStats?: AccountStat;
-    discoveryStats?: AccountStat;
+    stats?: AccountStats;
     region?: string;
     tagArtID?: string;
     crystalID?: number;
     settings?: AccountSettings;
     invitedBy?: string;
+}
+export interface AccountStats {
+    rankedConstructed?: AccountStat;
+    rankedDiscovery?: AccountStat;
+    conquestConstructed?: AccountStat;
+    conquestDiscovery?: AccountStat;
 }
 export interface AccountSettings {
     hidePlayerNames?: boolean;
@@ -275,6 +287,8 @@ export interface FeedEvent {
     heroes: Array<Hero>;
     gameMode?: GameMode;
     leaderboardRank?: number;
+    conquestV2Reward?: number;
+    conquestV2TreasureLevel?: number;
 }
 export interface CardImageURL {
     small: string;
@@ -297,6 +311,8 @@ export interface Card {
     status: CardStatus;
     imageURL: CardImageURL;
     itemType: ItemType;
+    silverCardTokenId?: number;
+    goldCardTokenId?: number;
 }
 export interface Sticker {
     id: number;
@@ -407,6 +423,12 @@ export interface PendingCardsResponse {
     tokenIDs: Array<number>;
     mintAt: string;
 }
+export interface WeeklyGolds {
+    startAt: string;
+    endAt: string;
+    tokenId: number;
+    totalSupply: number;
+}
 export interface Deck {
     uuid: string;
     accountAddress: string;
@@ -421,6 +443,7 @@ export interface Deck {
     favoritedAt: string;
     deckType: DeckType;
     isNew: boolean;
+    conquestV2Points: number;
 }
 export interface CheckDeckResponse {
     containsInvalid: boolean;
@@ -508,12 +531,6 @@ export interface Match {
     createdAt?: string;
     replayID: string;
 }
-export interface WeeklyGolds {
-    startAt: string;
-    endAt: string;
-    tokenId: number;
-    totalSupply: number;
-}
 export interface MatchPlayer {
     address: string;
     name: string;
@@ -564,6 +581,15 @@ export interface RewardDeck {
     deckClass: DeckClass;
     tokenIds: Array<number>;
 }
+export interface ConquestV2TreasureProgress {
+    treasureLevel: number;
+    treasurePoints: number;
+    treasurePointsRequired: number;
+}
+export interface RewardConquestV2TreasureProgress {
+    beforeMatch: ConquestV2TreasureProgress;
+    afterMatch: ConquestV2TreasureProgress;
+}
 export interface Reward {
     accountAddress: string;
     type: RewardType;
@@ -573,6 +599,7 @@ export interface Reward {
     hero?: RewardHero;
     heroSkin?: RewardHeroSkin;
     deck?: RewardDeck;
+    conquestV2TreasureProgress?: RewardConquestV2TreasureProgress;
 }
 export interface ListLeaderboardRequest {
     gameMode?: GameMode;
@@ -595,20 +622,6 @@ export interface LeaderboardEntry {
 }
 export interface ListMatchesRequest {
     accountAddress?: string;
-}
-export interface Notification {
-    id: number;
-    channel: string;
-    type: number;
-    content: string;
-    read: boolean;
-    deliveredAt: string;
-    createdAt: string;
-}
-export interface ListNotificationsRequest {
-    from: string;
-    until: string;
-    limit: number;
 }
 export interface GameClientFeedback {
     sentiment: string;
@@ -712,6 +725,71 @@ export interface DiscordInfoResponse {
     users_online: number;
     instant_invite_url: string;
 }
+export interface GameModesStatus {
+    tutorial: boolean;
+    practice: boolean;
+    warmUp: boolean;
+    rankedConstructed: boolean;
+    rankedDiscovery: boolean;
+    conquestConstructed: boolean;
+    conquestDiscovery: boolean;
+    challengeConstructed: boolean;
+    challengeDiscovery: boolean;
+}
+export interface GameModeStatus {
+    gameMode: GameMode;
+    enabled: boolean;
+}
+export interface GameModeStatusHistory {
+    id: number;
+    accountAddress: string;
+    gameMode: GameMode;
+    enabled: boolean;
+    createdAt: string;
+}
+export interface ConquestV2PoolConfigData {
+    maxPoolCeiling?: number;
+    poolCeiling: number;
+    poolFloor: number;
+    topWeightUnitPrice: number;
+    bottomWeightUnitPrice: number;
+}
+export interface ConquestV2PoolConfig {
+    default: ConquestV2PoolConfigData;
+    settings: ConquestV2PoolConfigData;
+    final: ConquestV2PoolConfigData;
+}
+export interface ConquestV2TreasureLevelSummary {
+    level: number;
+    numberOfPlayers: number;
+    totalWeight: number;
+}
+export interface ConquestV2Summary {
+    pool: number;
+    totalWeight: number;
+    weightUnitPrice: number;
+    treasureLevels: Array<ConquestV2TreasureLevelSummary>;
+}
+export interface ConquestV2AccountTreasureProgress {
+    accountAddress: string;
+    accountName: string;
+    progress: ConquestV2TreasureProgress;
+}
+export interface Notification {
+    id: number;
+    accountAddress: string;
+    type: NotificationType;
+    leaderboardReward?: NotificationLeaderboardReward;
+    conquestV2Reward?: NotificationConquestV2Reward;
+}
+export interface NotificationLeaderboardReward {
+}
+export interface NotificationConquestV2Reward {
+    season: number;
+    week: number;
+    treasureLevel: number;
+    amountUSDC: number;
+}
 export interface SkyWeaverAPI {
     getSession(headers?: object): Promise<GetSessionReturn>;
     getAccount(args: GetAccountArgs, headers?: object): Promise<GetAccountReturn>;
@@ -720,8 +798,9 @@ export interface SkyWeaverAPI {
     accountExists(args: AccountExistsArgs, headers?: object): Promise<AccountExistsReturn>;
     accountExistsByName(args: AccountExistsByNameArgs, headers?: object): Promise<AccountExistsByNameReturn>;
     updateAccount(args: UpdateAccountArgs, headers?: object): Promise<UpdateAccountReturn>;
-    listNotifications(args: ListNotificationsArgs, headers?: object): Promise<ListNotificationsReturn>;
     getPrivateSpectateCode(args: GetPrivateSpectateCodeArgs, headers?: object): Promise<GetPrivateSpectateCodeReturn>;
+    listNotifications(headers?: object): Promise<ListNotificationsReturn>;
+    setNotificationsAsSeen(args: SetNotificationsAsSeenArgs, headers?: object): Promise<SetNotificationsAsSeenReturn>;
     getFriendPoints(args: GetFriendPointsArgs, headers?: object): Promise<GetFriendPointsReturn>;
     getFriendPointsBySeason(args: GetFriendPointsBySeasonArgs, headers?: object): Promise<GetFriendPointsBySeasonReturn>;
     getPointsGifted(args: GetPointsGiftedArgs, headers?: object): Promise<GetPointsGiftedReturn>;
@@ -733,6 +812,7 @@ export interface SkyWeaverAPI {
     getItemSupply(args: GetItemSupplyArgs, headers?: object): Promise<GetItemSupplyReturn>;
     getBatchItemSupply(args: GetBatchItemSupplyArgs, headers?: object): Promise<GetBatchItemSupplyReturn>;
     getItemSuppliesByType(args: GetItemSuppliesByTypeArgs, headers?: object): Promise<GetItemSuppliesByTypeReturn>;
+    getItemOwnershipByType(args: GetItemOwnershipByTypeArgs, headers?: object): Promise<GetItemOwnershipByTypeReturn>;
     getCardLibrary(args: GetCardLibraryArgs, headers?: object): Promise<GetCardLibraryReturn>;
     getCardsByID(args: GetCardsByIDArgs, headers?: object): Promise<GetCardsByIDReturn>;
     getCardsByDeckString(args: GetCardsByDeckStringArgs, headers?: object): Promise<GetCardsByDeckStringReturn>;
@@ -762,9 +842,12 @@ export interface SkyWeaverAPI {
     accountLeaderboard(args: AccountLeaderboardArgs, headers?: object): Promise<AccountLeaderboardReturn>;
     getMatchArchiveRecordsURI(args: GetMatchArchiveRecordsURIArgs, headers?: object): Promise<GetMatchArchiveRecordsURIReturn>;
     getMatchLiveRecordsURI(args: GetMatchLiveRecordsURIArgs, headers?: object): Promise<GetMatchLiveRecordsURIReturn>;
+    conquestStatus(headers?: object): Promise<ConquestStatusReturn>;
     conquestStats(headers?: object): Promise<ConquestStatsReturn>;
     conquestRewards(headers?: object): Promise<ConquestRewardsReturn>;
     conquestPoints(headers?: object): Promise<ConquestPointsReturn>;
+    conquestV2Pool(headers?: object): Promise<ConquestV2PoolReturn>;
+    conquestV2Progress(headers?: object): Promise<ConquestV2ProgressReturn>;
     heroUnlockLevels(headers?: object): Promise<HeroUnlockLevelsReturn>;
     deckClassUnlockLevels(headers?: object): Promise<DeckClassUnlockLevelsReturn>;
     availableXPBonuses(headers?: object): Promise<AvailableXPBonusesReturn>;
@@ -841,20 +924,6 @@ export interface UpdateAccountArgs {
 export interface UpdateAccountReturn {
     account: Account;
 }
-export interface RequestAccountDeletionReturn {
-    status: boolean;
-}
-export interface ListNotificationsArgs {
-    req: ListNotificationsRequest;
-}
-export interface ListNotificationsReturn {
-    res: Array<Notification>;
-}
-export interface RequestMoreInvitesArgs {
-}
-export interface RequestMoreInvitesReturn {
-    status: boolean;
-}
 export interface SetInvitedByArgs {
     req: SetInvitedByRequest;
 }
@@ -866,6 +935,17 @@ export interface GetPrivateSpectateCodeArgs {
 }
 export interface GetPrivateSpectateCodeReturn {
     code: string;
+}
+export interface ListNotificationsArgs {
+}
+export interface ListNotificationsReturn {
+    notifications: Array<Notification>;
+}
+export interface SetNotificationsAsSeenArgs {
+    notificationIDs: Array<number>;
+}
+export interface SetNotificationsAsSeenReturn {
+    status: boolean;
 }
 export interface GetFriendPointsArgs {
     address: string;
@@ -948,6 +1028,13 @@ export interface GetItemSuppliesByTypeReturn {
     summary: {
         [key: number]: Array<ItemSupply>;
     };
+}
+export interface GetItemOwnershipByTypeArgs {
+    accountAddress?: string;
+    itemTypes?: Array<ItemType>;
+}
+export interface GetItemOwnershipByTypeReturn {
+    items: Array<Item>;
 }
 export interface GetCardLibraryArgs {
     page?: Page;
@@ -1181,7 +1268,6 @@ export interface InternalGetPrivateSpectateCodeReturn {
 }
 export interface EnterConquestArgs {
     hero: Hero;
-    mode: GameMode;
 }
 export interface EnterConquestReturn {
     status: boolean;
@@ -1206,6 +1292,16 @@ export interface ConquestPointsArgs {
 export interface ConquestPointsReturn {
     points: number;
     nedeed: number;
+}
+export interface ConquestV2PoolArgs {
+}
+export interface ConquestV2PoolReturn {
+    pool: number;
+}
+export interface ConquestV2ProgressArgs {
+}
+export interface ConquestV2ProgressReturn {
+    progress: ConquestV2TreasureProgress;
 }
 export interface IAPVerifyGoogleProductsArgs {
     packageName: string;
@@ -1283,10 +1379,9 @@ export declare class SkyWeaverAPI implements SkyWeaverAPI {
     accountExists: (args: AccountExistsArgs, headers?: object) => Promise<AccountExistsReturn>;
     accountExistsByName: (args: AccountExistsByNameArgs, headers?: object) => Promise<AccountExistsByNameReturn>;
     updateAccount: (args: UpdateAccountArgs, headers?: object) => Promise<UpdateAccountReturn>;
-    listNotifications: (args: ListNotificationsArgs, headers?: object) => Promise<ListNotificationsReturn>;
-    requestMoreInvites: (headers?: object) => Promise<RequestMoreInvitesReturn>;
-    setInvitedBy: (args: SetInvitedByArgs, headers?: object) => Promise<SetInvitedByReturn>;
     getPrivateSpectateCode: (args: GetPrivateSpectateCodeArgs, headers?: object) => Promise<GetPrivateSpectateCodeReturn>;
+    listNotifications: (headers?: object) => Promise<ListNotificationsReturn>;
+    setNotificationsAsSeen: (args: SetNotificationsAsSeenArgs, headers?: object) => Promise<SetNotificationsAsSeenReturn>;
     getFriendPoints: (args: GetFriendPointsArgs, headers?: object) => Promise<GetFriendPointsReturn>;
     getFriendPointsBySeason: (args: GetFriendPointsBySeasonArgs, headers?: object) => Promise<GetFriendPointsBySeasonReturn>;
     getPointsGifted: (args: GetPointsGiftedArgs, headers?: object) => Promise<GetPointsGiftedReturn>;
@@ -1298,6 +1393,7 @@ export declare class SkyWeaverAPI implements SkyWeaverAPI {
     getItemSupply: (args: GetItemSupplyArgs, headers?: object) => Promise<GetItemSupplyReturn>;
     getBatchItemSupply: (args: GetBatchItemSupplyArgs, headers?: object) => Promise<GetBatchItemSupplyReturn>;
     getItemSuppliesByType: (args: GetItemSuppliesByTypeArgs, headers?: object) => Promise<GetItemSuppliesByTypeReturn>;
+    getItemOwnershipByType: (args: GetItemOwnershipByTypeArgs, headers?: object) => Promise<GetItemOwnershipByTypeReturn>;
     getCardLibrary: (args: GetCardLibraryArgs, headers?: object) => Promise<GetCardLibraryReturn>;
     getCardsByID: (args: GetCardsByIDArgs, headers?: object) => Promise<GetCardsByIDReturn>;
     getCardsByDeckString: (args: GetCardsByDeckStringArgs, headers?: object) => Promise<GetCardsByDeckStringReturn>;

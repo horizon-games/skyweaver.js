@@ -88,7 +88,7 @@ var WebRPCVersion = "v1";
 // Schema version of your RIDL schema
 var WebRPCSchemaVersion = "v0.3.0";
 // Schema hash generated from your RIDL schema
-var WebRPCSchemaHash = "e047af6bf84f8be5d8448151fa67f81df766c420";
+var WebRPCSchemaHash = "bf3efdf3504c50d2ef8dd16b214905051dc2275c";
 //
 // Types
 //
@@ -129,6 +129,7 @@ exports.ItemType = void 0;
     ItemType["SW_CONQUEST_TICKET"] = "SW_CONQUEST_TICKET";
     ItemType["SW_CRYSTALS"] = "SW_CRYSTALS";
     ItemType["SW_STICKERS"] = "SW_STICKERS";
+    ItemType["SW_HERO_SKINS"] = "SW_HERO_SKINS";
     ItemType["SW_HERO"] = "SW_HERO";
 })(exports.ItemType || (exports.ItemType = {}));
 exports.FeedEventType = void 0;
@@ -144,6 +145,7 @@ exports.FeedEventType = void 0;
     FeedEventType["DELAYED_REWARD"] = "DELAYED_REWARD";
     FeedEventType["DELAYED_REWARD_MINTED"] = "DELAYED_REWARD_MINTED";
     FeedEventType["STARTED_DECK_UNLOCK"] = "STARTED_DECK_UNLOCK";
+    FeedEventType["CONQUEST_V2_REWARD"] = "CONQUEST_V2_REWARD";
 })(exports.FeedEventType || (exports.FeedEventType = {}));
 exports.Hero = void 0;
 (function (Hero) {
@@ -254,6 +256,7 @@ exports.RewardType = void 0;
     RewardType["HERO"] = "HERO";
     RewardType["HERO_SKIN"] = "HERO_SKIN";
     RewardType["DECK"] = "DECK";
+    RewardType["CONQUEST_POINTS"] = "CONQUEST_POINTS";
 })(exports.RewardType || (exports.RewardType = {}));
 exports.DeckType = void 0;
 (function (DeckType) {
@@ -287,6 +290,11 @@ exports.BannerType = void 0;
     BannerType["WARNING"] = "WARNING";
     BannerType["EMERGENCY"] = "EMERGENCY";
 })(exports.BannerType || (exports.BannerType = {}));
+exports.NotificationType = void 0;
+(function (NotificationType) {
+    NotificationType["LEADERBOARD_REWARD"] = "LEADERBOARD_REWARD";
+    NotificationType["CONQUEST_V2_REWARD"] = "CONQUEST_V2_REWARD";
+})(exports.NotificationType || (exports.NotificationType = {}));
 //
 // Client
 //
@@ -361,38 +369,29 @@ var SkyWeaverAPI = /** @class */ (function () {
                 });
             });
         };
-        this.listNotifications = function (args, headers) {
-            return _this.fetch(_this.url('ListNotifications'), createHTTPRequest(args, headers)).then(function (res) {
-                return buildResponse(res).then(function (_data) {
-                    return {
-                        res: (_data.res)
-                    };
-                });
-            });
-        };
-        this.requestMoreInvites = function (headers) {
-            return _this.fetch(_this.url('RequestMoreInvites'), createHTTPRequest({}, headers)).then(function (res) {
-                return buildResponse(res).then(function (_data) {
-                    return {
-                        status: (_data.status)
-                    };
-                });
-            });
-        };
-        this.setInvitedBy = function (args, headers) {
-            return _this.fetch(_this.url('SetInvitedBy'), createHTTPRequest(args, headers)).then(function (res) {
-                return buildResponse(res).then(function (_data) {
-                    return {
-                        ok: (_data.ok)
-                    };
-                });
-            });
-        };
         this.getPrivateSpectateCode = function (args, headers) {
             return _this.fetch(_this.url('GetPrivateSpectateCode'), createHTTPRequest(args, headers)).then(function (res) {
                 return buildResponse(res).then(function (_data) {
                     return {
                         code: (_data.code)
+                    };
+                });
+            });
+        };
+        this.listNotifications = function (headers) {
+            return _this.fetch(_this.url('ListNotifications'), createHTTPRequest({}, headers)).then(function (res) {
+                return buildResponse(res).then(function (_data) {
+                    return {
+                        notifications: (_data.notifications)
+                    };
+                });
+            });
+        };
+        this.setNotificationsAsSeen = function (args, headers) {
+            return _this.fetch(_this.url('SetNotificationsAsSeen'), createHTTPRequest(args, headers)).then(function (res) {
+                return buildResponse(res).then(function (_data) {
+                    return {
+                        status: (_data.status)
                     };
                 });
             });
@@ -496,6 +495,15 @@ var SkyWeaverAPI = /** @class */ (function () {
                 return buildResponse(res).then(function (_data) {
                     return {
                         summary: (_data.summary)
+                    };
+                });
+            });
+        };
+        this.getItemOwnershipByType = function (args, headers) {
+            return _this.fetch(_this.url('GetItemOwnershipByType'), createHTTPRequest(args, headers)).then(function (res) {
+                return buildResponse(res).then(function (_data) {
+                    return {
+                        items: (_data.items)
                     };
                 });
             });
@@ -967,7 +975,7 @@ var SkyweaverAPIClient = /** @class */ (function (_super) {
         _this._headers = {};
         _this._authToken = apiAccessToken;
         if (!apiAccessToken || apiAccessToken === '') {
-            throw new Error('Skyweaver API config error -- please request api token at https://developers.skyweaver.net');
+            throw new Error('Skyweaver API config error -- please request api token at https://request-api-key.skyweaver.net');
         }
         // TODO(future fix), see webrpc https://github.com/webrpc/webrpc/pull/103
         _this.fetch = function (a, b) { return _this._fetch(a, b); };

@@ -1,6 +1,6 @@
 {
   "name": "skyweaver",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Skyweaver API & Developer SDK for Web, React Native and Nodejs",
   "repository": "https://github.com/horizon-games/skyweaver.js",
   "main": "dist/index.js",
