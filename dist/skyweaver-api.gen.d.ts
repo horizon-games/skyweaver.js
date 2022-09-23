@@ -1351,11 +1351,6 @@ export interface GetBannersArgs {
 export interface GetBannersReturn {
     banners: Array<Banner>;
 }
-export interface GMListBannersArgs {
-}
-export interface GMListBannersReturn {
-    banners: Array<Banner>;
-}
 export interface PingArgs {
 }
 export interface PingReturn {
@@ -1434,7 +1429,6 @@ export declare class SkyWeaverAPI implements SkyWeaverAPI {
     getTwitchInfo: (headers?: object) => Promise<GetTwitchInfoReturn>;
     getFeaturedStreamers: (headers?: object) => Promise<GetFeaturedStreamersReturn>;
     getBanners: (headers?: object) => Promise<GetBannersReturn>;
-    gMListBanners: (headers?: object) => Promise<GMListBannersReturn>;
     ping: (headers?: object) => Promise<PingReturn>;
     version: (headers?: object) => Promise<VersionReturn>;
 }

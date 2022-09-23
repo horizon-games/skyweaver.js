@@ -1519,12 +1519,6 @@ export interface GetBannersArgs {
 export interface GetBannersReturn {
   banners: Array<Banner>  
 }
-export interface GMListBannersArgs {
-}
-
-export interface GMListBannersReturn {
-  banners: Array<Banner>  
-}
 
 export interface PingArgs {
 }
@@ -2342,20 +2336,7 @@ export class SkyWeaverAPI implements SkyWeaverAPI {
       })
     })
   }
-  
-  gMListBanners = (headers?: object): Promise<GMListBannersReturn> => {
-    return this.fetch(
-      this.url('GMListBanners'),
-      createHTTPRequest({}, headers)
-      ).then((res) => {
-      return buildResponse(res).then(_data => {
-        return {
-          banners: <Array<Banner>>(_data.banners)
-        }
-      })
-    })
-  }
-  
+    
   ping = (headers?: object): Promise<PingReturn> => {
     return this.fetch(
       this.url('Ping'),

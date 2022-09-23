@@ -8,12 +8,16 @@ const main = async () => {
 
   const apiClient = new SkyweaverAPIClient(apiAccessToken)
 
+  // Fetch the entire card library
+  const cardLibrary = await apiClient.getCardLibrary({})
+  console.log(cardLibrary)
+
+  // Fetch the leaderboard
   const leaderboard = await apiClient.listLeaderboard({
     req: {
       gameMode: GameMode.RANKED_CONSTRUCTED
     }
   })
-
   console.log(leaderboard)
 }
 

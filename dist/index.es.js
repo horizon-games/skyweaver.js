@@ -878,15 +878,6 @@ var SkyWeaverAPI = /** @class */ (function () {
                 });
             });
         };
-        this.gMListBanners = function (headers) {
-            return _this.fetch(_this.url('GMListBanners'), createHTTPRequest({}, headers)).then(function (res) {
-                return buildResponse(res).then(function (_data) {
-                    return {
-                        banners: (_data.banners)
-                    };
-                });
-            });
-        };
         this.ping = function (headers) {
             return _this.fetch(_this.url('Ping'), createHTTPRequest({}, headers)).then(function (res) {
                 return buildResponse(res).then(function (_data) {
