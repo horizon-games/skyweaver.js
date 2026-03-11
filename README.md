@@ -54,4 +54,4 @@ and ask in our #talk-to-the-devs channel.
 
 Wishing you all the best and welcome any feedback :)
 
--Horizon team
+-Sequence team
